@@ -1,0 +1,212 @@
+ \documentclass[12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}        % Кодировка входного документа;
+                                    % при необходимости, вместо cp1251
+                                    % можно указать cp866 (Alt-кодировка
+                                    % DOS) или koi8-r.
+
+\usepackage[english,russian]{babel} % Включение русификации, русских и
+                                    % английских стилей и переносов
+%%\usepackage{a4}
+%%\usepackage{moreverb}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{tikz} %Рисование автоматов
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol} %Несколько колонок
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+
+%% \voffset-5mm
+%% \def\baselinestretch{1.44}
+\renewcommand{\theequation}{\arabic{equation}}
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+\newtheorem{Lemma}{Лемма}
+\theoremstyle{definiton}
+%%\newtheorem{Def}{Определение}
+\newtheorem{Claim}{Утверждение}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Theorem}{Теорема}
+\theoremstyle{definition}
+\newtheorem{Example}{Пример}
+\newtheorem*{known}{Теорема}
+\def\proofname{Доказательство}
+\def\solutionname{Решение}
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+
+%% \newenvironment{Example} % имя окружения
+%% {\par\noindent{\bf Пример.}} % команды для \begin
+%% {\hfill$\scriptstyle\qed$} % команды для \end
+
+
+
+
+
+
+%\date{22 июня 2011 г.}
+\let\leq\leqslant
+\let\geq\geqslant
+\def\MT{\mathrm{MT}}
+%Обозначения ``ажуром''
+\def\BB{\mathbb B}
+\def\CC{\mathbb C}
+\def\RR{\mathbb R}
+\def\SS{\mathbb S}
+\def\ZZ{\mathbb Z}
+\def\NN{\mathbb N}
+\def\FF{\mathbb F}
+%греческие буквы
+\let\epsilon\varepsilon
+\let\es\emptyset
+\let\eps\varepsilon
+\let\al\alpha
+\let\sg\sigma
+\let\ga\gamma
+\let\ph\varphi
+\let\om\omega
+\let\ld\lambda
+\let\Ld\Lambda
+\let\vk\varkappa
+\let\Om\Omega
+\def\abstractname{}
+
+\def\R{{\cal R}}
+\def\A{{\cal A}}
+\def\B{{\cal B}}
+\def\C{{\cal C}}
+\def\D{{\cal D}}
+\let\w\omega
+
+
+%вероятность 
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\MExpect}{\mathsf{M}}
+
+%классы сложности
+\def\REG{{\mathsf{REG}}}
+\def\CFL{{\mathsf{CFL}}}
+\newcounter{problem}
+\newcounter{uproblem}
+\newcounter{subproblem}
+\def\pr{\medskip\noindent\stepcounter{problem}{\bf \theproblem .  }\setcounter{subproblem}{0} }
+\def\prstar{\medskip\noindent\stepcounter{problem}{\bf $\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prpfrom[#1]{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem~(№#1 из задания).  }\setcounter{subproblem}{0} }
+\def\prp{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem .  }\setcounter{subproblem}{0} }
+\def\prpstar{\medskip\noindent\stepcounter{problem}{\bf Задача $\bf\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prdag{\medskip\noindent\stepcounter{problem}{\bf Задача $\theproblem^{^\dagger}$\negthickspace\,.  }\setcounter{subproblem}{0} }
+\def\upr{\medskip\noindent\stepcounter{uproblem}{\bf Упражнение \theuproblem .  }\setcounter{subproblem}{0} }
+%\def\prp{\vspace{5pt}\stepcounter{problem}{\bf Задача \theproblem .  } }
+%\def\prs{\vspace{5pt}\stepcounter{problem}{\bf \theproblem .*   }
+\def\prsub{\medskip\noindent\stepcounter{subproblem}{\rm \thesubproblem .  } }
+\def\prsubstar{\medskip\noindent\stepcounter{subproblem}{\rm $\thesubproblem^*$\negthickspace.  } }
+%прочее
+\def\quotient{\backslash\negthickspace\sim}
+\begin{document}
+
+\centerline{\LARGE Домашнее задание 1, Новиков Герман, 277}
+
+\medskip
+
+\prp Пусть $\hat{F}_n$ — эмпирическая функция распределения, построенная по
+простой выборке длины $n$, с неизвестной функцией распределения $F$.
+
+\begin{itemize}
+\item Какое распределение имеет случайная величина $n \hat{F}_n$?
+\item Используя оценку $\hat{F}_n(x)$ и вариант центральной предельной теоремы, построить приближенный (в виду предельности теоремы) интервал, содержащий значение
+$F(x)$ с заданной вероятностью $\alpha$.
+\end{itemize}
+
+\textbf{Решение: }
+
+\begin{itemize}
+\item По определению: $$n \hat{F}_n(x) = \sum\limits_{i=1}^n I(X_i < x)$$. Но тогда, для произвольного $x$: $n \hat{F}_n(x)$ есть сумма $n$ независимых Бернуллевских случайных велечин с $p = F(x)$, а следственно $$n \hat{F}_n(x) \sim Bin(n, F(x))$$
+
+
+\item 
+
+$$\sqrt{n}(\hat{F}_n(x) - F(x)) = \left(\frac{\sum\limits_{i=1}^n I(X_i < x) - nF(x)}{\sqrt{n}}\right) = $$ 
+
+$$= \left(\frac{\sum\limits_{i=1}^n I(X_i < x) - n\Expect(I(X_1 < x))}{\sqrt{n}}\right) \xrightarrow{CLT} N(0,\Variance(I(X_1 < x)))$$
+
+Где $\Variance(I(X_1 < x)) = F(x)(1 - F(x))$
+
+Таким образом, получаем ассимптотическую оценку на распределение разности между эмперической и реальной функцией распределения, взвешенной на $\sqrt{n}$. Положим, что выборка достаточно большая и можно считать, что равенство не ассимптотическое. Тогда мы просто берем двухсторонний квантиль: $$x^{(1)}_{\frac{\alpha}{\sqrt{n}}} = G^{-1}\left(\frac{\alpha}{2\sqrt{n}}\right), x^{(2)}_{\frac{\alpha}{\sqrt{n}}} = G^{-1}\left(1 -\frac{\alpha}{2\sqrt{n}}\right)$$
+
+Где $G(x)$ - та самая, полученная нами предельная функция распределения.
+
+\end{itemize}
+
+
+\begin{Theorem}
+(Неравенство Дворецкого-Кифера-Вольфовитца).
+\end{Theorem}
+
+
+Пусть $X_1,...,X_n \sim F$. Тогда для любого $\epsilon > 0$:
+
+$$\Prob\left(\sup\limits_{x \in \mathbb{R}}|\hat{F}_n(x) - F(x)| \geq \epsilon\right) \leq 2 \exp (-2n\epsilon^2)$$
+
+\prp Построить на основании неравенства Дворецкого-Кифера-Вольфовитца
+неасимптотический вариант критерия согласия Колмогорова. Указать критическую
+область при заданном уровне значимости.
+
+\textbf{Решение: } критерий согласия Колмогорова:
+
+$$\Prob\left(\sqrt{n}\sup\limits_{x \in \mathbb{R}}|\hat{F}_n(x) - F(x)| \leq \epsilon\right) =  \Prob\left(\sup\limits_{x \in \mathbb{R}}|\hat{F}_n(x) - F(x)| \leq \frac{\epsilon}{\sqrt{n}}\right) \leq 1 - 2 \exp (-2\epsilon^2)$$
+
+Задаём $\alpha$ - уровень значимости: $\sqrt{n} \sup\limits_{x \in \mathbb{R}}|\hat{F}_n(x) - F(x)| \geq t_{\alpha}$
+
+\medskip
+
+В нашем случае $K(\epsilon) = 1 - 2\exp(-2\epsilon^2)$
+
+\medskip
+
+Хотим: $\alpha = 1 - K(\epsilon)$, следственно выбираем $$t_{\alpha} = \epsilon = K^{-1}(1-\alpha) = \sqrt{\frac{\ln(2) - ln(\alpha)}{2}}$$
+
+Таким образом отвергаем гипотезу $H_0$ при: $$\sqrt{n} D_n \geq \sqrt{\frac{\ln(2) - ln(\alpha)}{2}}$$
+
+
+
+\prp Доказать, что $$\sup\limits_{x \in \mathbb{R}} |\hat{F}(x) - F(x)| \xrightarrow{a.e.} 0,$$ где предел берется по $n$ - числу элементов выборки.
+
+\textbf{Доказательство(можно не комментировать, это доказательство из книги, свое я обещаю придумать): } Пусть $F(x)$ непрерывна. Фиксируем $\epsilon = 1/N$. Так как $\forall x F(x) \in [0,1]$ и непрерывна, то существует набор чисел $\{x_i\}_{i=1}^N \subset \mathbb{R}\cup\{-\infty, +\infty\}$ такой, что на каждом из отрезков $[x_i, x_i+1]$ функция $F(x)$ растёт на $\frac1N$, где $N$ - произвольное целое. Тогда $\forall x \in [x_i, x_{i+1}]$ выполнено:
+
+$$\hat{F}(x) - F(x) \leq \hat{F}(x_{i+1}) - F(x_i) = \hat{F}(x_{i+1}) - F(x_{i+1}) + \epsilon$$
+
+$$\hat{F}(x) - F(x) \geq \hat{F}(x_{i}) - F(x_i+1) = \hat{F}(x_{i}) - F(x_{i}) - \epsilon$$
+
+
+Обозначим $A_k$ - множество элементарных событий $\omega$, на которых $\hat{F}(x_k)\rightarrow F(x_k)$. Мера этого множества $P(A_k) = 1$ в силу УЗБЧ. Но тогда $\forall \omega \in A = \cup_{k=0,N} A_k$ существует $n(\omega)$: что $\forall n \geq n(\omega)$ выполнено
+
+$$|\hat{F}(x_k) - F(x_k)| < \epsilon, k = 0,1,...,N.$$
+
+Но тогда вместе с предыдущим получаем требуемое утверждение:
+
+$$\sup\limits_z |\hat{F}(x) - F(x)| < 2\epsilon.$$
+
+Для произвольной функции аналогично. Только нужно более аккуратно поступать с разрывами.
+
+
+\prp Построить plug-in оценки для математического ожидания и дисперсии.
+Являются ли эти оценки несмещенными?
+
+\textbf{Решение: } 
+
+\begin{itemize}
+\item Для математического ожидания $\overline{x} = \hat{\Expect}(X) = \frac1n\sum\limits^n_{i=1} X_i$. Она является несмещенной, т.к. $\Expect\hat{\Expect}(X) = \Expect\frac1n\sum\limits^n_{i=1} X_i = \frac1n\sum\limits^n_{i=1} \Expect X_i = \Expect X$, где $X \sim F(x)$
+\item Для дисперсии: $S^2 = \frac1n\sum\limits^n_{i=1} (X_i - \overline{x})^2$. Она не является несмещенной: 
+
+$S^2 = \frac1n\sum\limits^n_{i=1} (X_i - \overline{x})^2 =
+\frac1n\sum\limits^n_{i=1}(X_i^2 - 2X_i\overline{x} + \overline{x}^2) = \frac1n\sum\limits^n_{i=1}  X_i^2 - 2\overline{x}(\frac1n\sum\limits^n_{i=1} X_i) + \frac1n\sum\limits^n_{i=1} X_i^2 = \frac1{n}\sum\limits^n_{i=1} X_i^2 - \overline{x}^2  = \overline{x^2} - \overline{x}^2$
+
+Тогда получим, что $\Expect S^2 = \Expect(\overline{x^2} - \overline{x}^2) = ... = \sigma^2 - \frac{\sigma^2}{n} = \sigma^2(1 - \frac1n)$. То есть не является несмещенной, однако просто нормируется до несмещенной, домножением на $\frac{n}{n-1}$.
+
+
+\end{itemize}
+
+
+\end{document}
