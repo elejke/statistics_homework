@@ -1,0 +1,179 @@
+ \documentclass[12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}        % Кодировка входного документа;
+                                    % при необходимости, вместо cp1251
+                                    % можно указать cp866 (Alt-кодировка
+                                    % DOS) или koi8-r.
+
+\usepackage[english,russian]{babel} % Включение русификации, русских и
+                                    % английских стилей и переносов
+%%\usepackage{a4}
+%%\usepackage{moreverb}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{tikz} %Рисование автоматов
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol} %Несколько колонок
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+%\usepackage{hyperref}
+
+%% \voffset-5mm
+%% \def\baselinestretch{1.44}
+\renewcommand{\theequation}{\arabic{equation}}
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+\newtheorem{Lemma}{Лемма}
+\theoremstyle{definiton}
+%%\newtheorem{Def}{Определение}
+\newtheorem{Claim}{Утверждение}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Theorem}{Теорема}
+\theoremstyle{definition}
+\newtheorem{Example}{Пример}
+\newtheorem*{known}{Теорема}
+\def\proofname{Доказательство}
+\def\solutionname{Решение}
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+
+%% \newenvironment{Example} % имя окружения
+%% {\par\noindent{\bf Пример.}} % команды для \begin
+%% {\hfill$\scriptstyle\qed$} % команды для \end
+
+
+
+
+
+
+%\date{22 июня 2011 г.}
+\let\leq\leqslant
+\let\geq\geqslant
+\def\MT{\mathrm{MT}}
+%Обозначения ``ажуром''
+\def\BB{\mathbb B}
+\def\CC{\mathbb C}
+\def\RR{\mathbb R}
+\def\SS{\mathbb S}
+\def\ZZ{\mathbb Z}
+\def\NN{\mathbb N}
+\def\FF{\mathbb F}
+%греческие буквы
+\let\epsilon\varepsilon
+\let\es\emptyset
+\let\eps\varepsilon
+\let\al\alpha
+\let\sg\sigma
+\let\ga\gamma
+\let\ph\varphi
+\let\om\omega
+\let\ld\lambda
+\let\Ld\Lambda
+\let\vk\varkappa
+\let\Om\Omega
+\def\abstractname{}
+
+\def\R{{\cal R}}
+\def\A{{\cal A}}
+\def\B{{\cal B}}
+\def\C{{\cal C}}
+\def\D{{\cal D}}
+\let\w\omega
+
+
+%вероятность 
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\MExpect}{\mathsf{M}}
+
+%классы сложности
+\def\REG{{\mathsf{REG}}}
+\def\CFL{{\mathsf{CFL}}}
+\newcounter{problem}
+\newcounter{uproblem}
+\newcounter{subproblem}
+\def\pr{\medskip\noindent\stepcounter{problem}{\bf \theproblem .  }\setcounter{subproblem}{0} }
+\def\prstar{\medskip\noindent\stepcounter{problem}{\bf $\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prpfrom[#1]{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem~(№#1 из задания).  }\setcounter{subproblem}{0} }
+\def\prp{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem .  }\setcounter{subproblem}{0} }
+\def\prpstar{\medskip\noindent\stepcounter{problem}{\bf Задача $\bf\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prdag{\medskip\noindent\stepcounter{problem}{\bf Задача $\theproblem^{^\dagger}$\negthickspace\,.  }\setcounter{subproblem}{0} }
+\def\upr{\medskip\noindent\stepcounter{uproblem}{\bf Упражнение \theuproblem .  }\setcounter{subproblem}{0} }
+%\def\prp{\vspace{5pt}\stepcounter{problem}{\bf Задача \theproblem .  } }
+%\def\prs{\vspace{5pt}\stepcounter{problem}{\bf \theproblem .*   }
+\def\prsub{\medskip\noindent\stepcounter{subproblem}{\rm \thesubproblem .  } }
+\def\prsubstar{\medskip\noindent\stepcounter{subproblem}{\rm $\thesubproblem^*$\negthickspace.  } }
+%прочее
+\def\quotient{\backslash\negthickspace\sim}
+\begin{document}
+
+\centerline{\LARGE Домашнее задание 3, Новиков Герман, 277}
+
+\medskip
+
+Все вычисления вместе с кодом и комментариями находятся в файле на $\href{https://github.com/elejke/statistics_homework/blob/master/task3/code/task3.ipynb}{\textbf{github}}$
+
+\prp 8-го января 2003 года в New York Times были сообщены следующие
+данные из штата Мэриленд: в случае, если происходило убийство афроамериканца,
+было вынесено 14 смертных приговоров для преступника, а в 641 случае смертных
+приговор не последовало. В случае, если происходило убийство белого, то в 62
+случаях был вынесен смертный приговор и в 594 случаях не был. Проанализируйте
+эти данные, используя статистические техники, и интерпретируйте результаты.
+
+
+\textbf{Решение: } Проверим, является ли значимым цвет кожи убитого, то есть посмотрим - есть ли зависимость между количеством осужденных за убийство человека того или иного цвета кожи от самого цвета кожи убитого. Выдвинем гипотезу, о том что зависимости нет и воспользуемся критерием $\chi^2$:
+
+
+Ответ:
+%Получаемое значение $T_{\chi^2}$ отвечает нашему предположению для $\alpha = 0.05$, соотвественно, принимаем гипотезу о равномерном распределении.
+
+\prp (Задача номер 59). Построить критерий для проверки гипотезы $H_1 : p = \frac12$ при альтернативной гипотезе $H_2 : p \neq \frac12$ по результатам восьми испытаний, подчиняющихся схеме Бернулли. Вероятность ошибки первого рода $\alpha$ положить равной 0,05.
+
+
+\textbf{Решение: } Предположим, что верная гипотеза $H_1 : p = \frac12$. В этом предположении случайная величина $$\theta = 2\sqrt{n} (\frac{n-k}{k} - \frac12),$$ где $n = 8$, $k-$ количество $1$, имеет в силу ЦПТ распределение к близкое к $N(0,1)$ (сходимость по вероятности).И, таким образом, можно установить пару квантилей, соответствующих $\frac{\alpha}{2}$ и $1 - \frac{\alpha}{2}$ (так как распределение $N(0,1)$ является известным) и принимать или отвергать гипотезу в соответствии с ними.
+
+\prp (Задача номер 3) Пусть $X_1,...,X_n$ — простая выборка, полученная из
+абсолютно непрерывного распределения с плотностью $f$. Найти: 
+\begin{itemize}
+\item  Функцию плотности совместного распределения вариационного ряда $X_{(1)},...,X_{(n)}$.
+\item Совместное распределение $X_{(1)}$ и $X_{(n)}$ при условии, что $X_i$ имеет равномерное распределение на отрезке $[a,b]$. Вычислить также их математические
+ожидания, дисперсии и корреляцию.
+\end{itemize}
+
+\textbf{Решение: }
+
+\begin{itemize}
+
+\item Функцию плотности рассмотрим для $n=2$, для $n \geq 2$ ее построение ничем не отличается: Пусть $x_1 < x_2$ и будем рассматривать интервалы, по которым могут распределиться все наши элементы ряда: ровно $i_{1}-1$ должны попасть в интервал до $x_1$, один из элементов в $[x_1, x_1 + dx]$, дальше ещё $i_2 - 1 - i_1$ элемент ровно между $x_1+dx$ и $x_2$, один элемент в $[x_2, x_2 + dx]$ и все оставшиеся дальше $x_2+dx$. Таким образом, получим вероятность такого события:
+
+\begin{align*}
+C_n^{i_1 -1} F^{i_1 -1}(x_1)(n - i_1 + 1) f(x_1)dxC^{i_2 - 1 -i_1}_{n-i_1}(F(x_2)- \\F(x_1+dx))^{i_2 - 1 - i_1}(n-i_2+1)f(x_2)dx(1 - F(x_2))^{n-i_2}
+\end{align*}
+
+Просто берем предел при $dx \rightarrow 0$ и получаем функцию распределения для $X{(i_1)}$ и $X_{(i_2)}$. Дальше аналогично для произвольного $n$.
+
+
+\item Теперь рассмотрим совместное распределение для двух элементов $i_1 = 1, i_2 = n$, по формуле, выведенной выше и при условии $X_i$ - равномерна на $[a,b]$
+
+\begin{align*}
+C_n^{0} F^{0}(x_1)(n) f(x_1)C^{n - 2}_{n-1}(F(x_2)- \\F(x_1))^{n - 2}(n)f(x_2)dx(1 - F(x_2))^{0}
+\end{align*}
+
+Где $F$ и $f$ - ФР и ФП для равномерного на $[a,b]$
+
+Математическое ожидание для 
+
+\end{itemize}
+
+\prp
+
+\prp
+
+\prp Проанализируйте данные о возрасте и доходах по ссылке:
+http://lib.stat.cmu.edu/DASL/Datafiles/montanadat.html
+
+\textbf{Решение: } Воспользуемся аналогично задаче 1 гипотезой независимости и используем критерий $\chi^2$:
+
+Ответ: 
+
+\end{document}
