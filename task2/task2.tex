@@ -1,0 +1,165 @@
+ \documentclass[12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}        % Кодировка входного документа;
+                                    % при необходимости, вместо cp1251
+                                    % можно указать cp866 (Alt-кодировка
+                                    % DOS) или koi8-r.
+
+\usepackage[english,russian]{babel} % Включение русификации, русских и
+                                    % английских стилей и переносов
+%%\usepackage{a4}
+%%\usepackage{moreverb}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{tikz} %Рисование автоматов
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol} %Несколько колонок
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+%\usepackage{hyperref}
+
+%% \voffset-5mm
+%% \def\baselinestretch{1.44}
+\renewcommand{\theequation}{\arabic{equation}}
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+\newtheorem{Lemma}{Лемма}
+\theoremstyle{definiton}
+%%\newtheorem{Def}{Определение}
+\newtheorem{Claim}{Утверждение}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Theorem}{Теорема}
+\theoremstyle{definition}
+\newtheorem{Example}{Пример}
+\newtheorem*{known}{Теорема}
+\def\proofname{Доказательство}
+\def\solutionname{Решение}
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+
+%% \newenvironment{Example} % имя окружения
+%% {\par\noindent{\bf Пример.}} % команды для \begin
+%% {\hfill$\scriptstyle\qed$} % команды для \end
+
+
+
+
+
+
+%\date{22 июня 2011 г.}
+\let\leq\leqslant
+\let\geq\geqslant
+\def\MT{\mathrm{MT}}
+%Обозначения ``ажуром''
+\def\BB{\mathbb B}
+\def\CC{\mathbb C}
+\def\RR{\mathbb R}
+\def\SS{\mathbb S}
+\def\ZZ{\mathbb Z}
+\def\NN{\mathbb N}
+\def\FF{\mathbb F}
+%греческие буквы
+\let\epsilon\varepsilon
+\let\es\emptyset
+\let\eps\varepsilon
+\let\al\alpha
+\let\sg\sigma
+\let\ga\gamma
+\let\ph\varphi
+\let\om\omega
+\let\ld\lambda
+\let\Ld\Lambda
+\let\vk\varkappa
+\let\Om\Omega
+\def\abstractname{}
+
+\def\R{{\cal R}}
+\def\A{{\cal A}}
+\def\B{{\cal B}}
+\def\C{{\cal C}}
+\def\D{{\cal D}}
+\let\w\omega
+
+
+%вероятность 
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\MExpect}{\mathsf{M}}
+
+%классы сложности
+\def\REG{{\mathsf{REG}}}
+\def\CFL{{\mathsf{CFL}}}
+\newcounter{problem}
+\newcounter{uproblem}
+\newcounter{subproblem}
+\def\pr{\medskip\noindent\stepcounter{problem}{\bf \theproblem .  }\setcounter{subproblem}{0} }
+\def\prstar{\medskip\noindent\stepcounter{problem}{\bf $\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prpfrom[#1]{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem~(№#1 из задания).  }\setcounter{subproblem}{0} }
+\def\prp{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem .  }\setcounter{subproblem}{0} }
+\def\prpstar{\medskip\noindent\stepcounter{problem}{\bf Задача $\bf\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prdag{\medskip\noindent\stepcounter{problem}{\bf Задача $\theproblem^{^\dagger}$\negthickspace\,.  }\setcounter{subproblem}{0} }
+\def\upr{\medskip\noindent\stepcounter{uproblem}{\bf Упражнение \theuproblem .  }\setcounter{subproblem}{0} }
+%\def\prp{\vspace{5pt}\stepcounter{problem}{\bf Задача \theproblem .  } }
+%\def\prs{\vspace{5pt}\stepcounter{problem}{\bf \theproblem .*   }
+\def\prsub{\medskip\noindent\stepcounter{subproblem}{\rm \thesubproblem .  } }
+\def\prsubstar{\medskip\noindent\stepcounter{subproblem}{\rm $\thesubproblem^*$\negthickspace.  } }
+%прочее
+\def\quotient{\backslash\negthickspace\sim}
+\begin{document}
+
+\centerline{\LARGE Домашнее задание 2, Новиков Герман, 277}
+
+\medskip
+
+Все вычисления вместе с кодом и комментариями находятся в файле на $\href{https://github.com/elejke/statistics_homework/blob/master/task2/code/task2_code.ipynb}{\textbf{github}}$
+
+\prp (Задача нормер 9). Цифры $0, 1, 2, . . . , 9$ среди $800$ первых десятичных знаков числа $\pi$ появляются $74, 92, 83, 79, 80, 73, 77, 75, 76, 91$ раз соответственно.
+
+Проверить гипотезу о согласии данных с законом равномерного распределения.
+
+
+\textbf{Решение: } Для проверки гипотезы о равномерности распределении данных воспользуемся критерием $\chi^2$:
+
+Получаемое значение $T_{\chi^2}$ отвечает нашему предположению для $\alpha = 0.05$, соотвественно, принимаем гипотезу о равномерном распределении.
+
+\prp $data = [50 numbers]$
+
+Используя Пирсоновский хи-квадрат тест, проверить гипотезу о том, что эти числа распределены согласно равномерному распределению на отрезке [0, 1]. 
+
+\textbf{Решение: } Аналогично предыдущей задаче, однако в этот раз воспользуемся $p-value$.
+
+Полученное значение $p_{value} = 0.23$ показывает, что с достаточной вероятностью данные распределены равномерно на $[0,1]$, что подтверждает нашу гипотезу.
+
+\prp (Задача номер 10) При эпидемии гриппа из 200 контролируемых людей
+однократное заболевание наблюдалось у 181 человека, а дважды болели гриппом
+9 человек. Правдоподобна ли гипотеза о том, что в течение эпидемии гриппа
+число заболеваний отдельного человека представляет собой случайную величину,
+подчиняющуюся биномиальному распределению с числом испытаний $n = 2$?
+
+\textbf{Решение: } Изначально, мы не знаем распределение вероятностей (то есть не знаем параметр $p$), строим правдоподобие для него и находим предполагаемое значение. Дальше используем критерий $\chi^2$.
+
+Полученное $p_{value} = 3.18e^{-29}$ есть почти нулевая величина, что означает, что мы получили очень редкое событие и, в соответствии с этим, мы отвергаем нашу гипотезу о нормальном распределении.
+
+\prp Пусть некоторая статистика, построенная по простой выборке, в условиях истинности гипотезы $H_0$ имеет абсолютно непрерывное распределение. 
+Рассматривая $p-value$ как случайную величину, найти ее распределение.
+
+\textbf{Решение: } В предположении, что нулевая гипотеза $H_0$ справедлива, рассматриваемая нами статистика $T(X)$ имеет распределение $F(t)$. Рассматриваем распределение $p-value$ (учитывая, что статистика имеет абсолютно непрерывное распределение), фактически - $p-value$ - случайная величина: $\xi = 1 - F(T(X))$, но тогда:
+
+
+
+$$\Prob(\xi < t) = \Prob(1 - F(T(X)) < t) = 1 - \Prob(F(T(X)) > 1 - t) = $$
+$$1 - \Prob(T(X) > F^{-1}(1-t)) = 1 - F(F^{-1}(1-t)) = 1 - (1-t) = t$$
+
+То есть мы получаем, что $p-value$ для любого распределения есть равномерно распределенная на $[0,1]$ случайная величина.
+
+\prp (Задача номер 12). При снятии показаний измерительного прибора
+десятые доли деления шкалы прибора оцениваются "на глаз" \newline наблюдателем.
+Количества цифр $0, 1, 2, ..., 9$, записанных наблюдателем в качестве десятых долей 1 при 100 независимых измерениях, равны $5, 8, 6, 12, 14, 18, 11, 6, 13, 7$ соответственно.
+
+Проверить гипотезы о согласии данных с законом равномерного распределения и
+с законом нормального распределения. Для ответа на вопрос можно сравнить
+значения p-value для обеих гипотез.
+
+\textbf{Решение: } С семинара и в Ивченко-Медведеве выведены формулы для $\widehat{\theta_1}$ и $\widehat{\theta_2}$, остается посчитать их численно и подставить в $T_{chi^2}$, для которого у нас будет $N-1-2$ степеней свободы в силу независимости $\theta_1$ и $\theta_2$.
+
+\end{document}
