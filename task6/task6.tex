@@ -1,0 +1,285 @@
+ \documentclass[12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}        % Кодировка входного документа;
+                                    % при необходимости, вместо cp1251
+                                    % можно указать cp866 (Alt-кодировка
+                                    % DOS) или koi8-r.
+
+\usepackage[english,russian]{babel} % Включение русификации, русских и
+                                    % английских стилей и переносов
+%%\usepackage{a4}
+%%\usepackage{moreverb}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{tikz} %Рисование автоматов
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol} %Несколько колонок
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+%\usepackage{hyperref}
+
+%% \voffset-5mm
+%% \def\baselinestretch{1.44}
+\renewcommand{\theequation}{\arabic{equation}}
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+\newtheorem{Lemma}{Лемма}
+\theoremstyle{definiton}
+%%\newtheorem{Def}{Определение}
+\newtheorem{Claim}{Утверждение}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Theorem}{Теорема}
+\theoremstyle{definition}
+\newtheorem{Example}{Пример}
+\newtheorem*{known}{Теорема}
+\def\proofname{Доказательство}
+\def\solutionname{Решение}
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+
+%% \newenvironment{Example} % имя окружения
+%% {\par\noindent{\bf Пример.}} % команды для \begin
+%% {\hfill$\scriptstyle\qed$} % команды для \end
+
+
+
+
+
+
+%\date{22 июня 2011 г.}
+\let\leq\leqslant
+\let\geq\geqslant
+\def\MT{\mathrm{MT}}
+%Обозначения ``ажуром''
+\def\BB{\mathbb B}
+\def\CC{\mathbb C}
+\def\RR{\mathbb R}
+\def\SS{\mathbb S}
+\def\ZZ{\mathbb Z}
+\def\NN{\mathbb N}
+\def\FF{\mathbb F}
+%греческие буквы
+\let\epsilon\varepsilon
+\let\es\emptyset
+\let\eps\varepsilon
+\let\al\alpha
+\let\sg\sigma
+\let\ga\gamma
+\let\ph\varphi
+\let\om\omega
+\let\ld\lambda
+\let\Ld\Lambda
+\let\vk\varkappa
+\let\Om\Omega
+\def\abstractname{}
+
+\def\R{{\cal R}}
+\def\A{{\cal A}}
+\def\B{{\cal B}}
+\def\C{{\cal C}}
+\def\D{{\cal D}}
+\let\w\omega
+
+
+%вероятность 
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\MExpect}{\mathsf{M}}
+
+%классы сложности
+\def\REG{{\mathsf{REG}}}
+\def\CFL{{\mathsf{CFL}}}
+\newcounter{problem}
+\newcounter{uproblem}
+\newcounter{subproblem}
+\def\pr{\medskip\noindent\stepcounter{problem}{\bf \theproblem .  }\setcounter{subproblem}{0} }
+\def\prstar{\medskip\noindent\stepcounter{problem}{\bf $\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prpfrom[#1]{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem~(№#1 из задания).  }\setcounter{subproblem}{0} }
+\def\prp{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem .  }\setcounter{subproblem}{0} }
+\def\prpstar{\medskip\noindent\stepcounter{problem}{\bf Задача $\bf\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prdag{\medskip\noindent\stepcounter{problem}{\bf Задача $\theproblem^{^\dagger}$\negthickspace\,.  }\setcounter{subproblem}{0} }
+\def\upr{\medskip\noindent\stepcounter{uproblem}{\bf Упражнение \theuproblem .  }\setcounter{subproblem}{0} }
+%\def\prp{\vspace{5pt}\stepcounter{problem}{\bf Задача \theproblem .  } }
+%\def\prs{\vspace{5pt}\stepcounter{problem}{\bf \theproblem .*   }
+\def\prsub{\medskip\noindent\stepcounter{subproblem}{\rm \thesubproblem .  } }
+\def\prsubstar{\medskip\noindent\stepcounter{subproblem}{\rm $\thesubproblem^*$\negthickspace.  } }
+%прочее
+\def\quotient{\backslash\negthickspace\sim}
+\begin{document}
+
+\centerline{\LARGE Домашнее задание 6, Новиков Герман, 277}
+
+\medskip
+
+%Все вычисления вместе с кодом и комментариями находятся в файле на $\href{https://github.com/elejke/statistics_homework/blob/master/task3/code/task3.ipynb}{\textbf{github}}$
+
+\prp Пусть наблюдается одно измерение из распределения Бернулли с неизвестным параметром $\theta$. Допустимые значения параметра $\Theta = \{\theta_1 = \frac14, \theta_2 = \frac34 \}$.
+
+Множество решающих правил $D = \{ d_1, d_2, d_3 \}$. Функция потерь $L(\theta_i,d_j)$ задана следующими значениями:
+
+$$L(\theta_1, d_1) = L(\theta_2, d_2) = 0,$$
+
+$$L(\theta_1, d_3) = L(\theta_2, d_3) = \frac12,$$
+
+$$L(\theta_1, d_2) = 1,$$
+
+$$L(\theta_2, d_1) = 4.$$
+
+Найти все байесовские решения.
+
+\textbf{Решение: } В данном случае для каждого $x$ возможны 3 решения, а множество значений $x$ содержит 2 точки $\{0, 1\}$. Следственно возможно всего 9 решающих функции $\delta_k, k = \overline{1,9}$
+
+$$(\delta_k(0),\delta_k(1)) = (d_i, d_j)_{i,j=\overline{1,3}}$$
+
+Функция риска:
+
+$$R(\delta_k, \theta) = \Expect_{\theta} L(\delta_k(X),\theta) = L(\delta_k(0),\theta)(1-\theta) + L(\delta_k(1),\theta)\theta, \theta = \theta_1, \theta_2$$
+
+Для каждой решающей функции находим вектор риска:
+
+$$R(\delta_k,\theta_1), R(\delta_k, \theta_2)), k=\overline{1,9}$$
+
+Их числовые значения($d_1:d_1,d_2,d_3; d_2:d_1,d_2,d_3; d_3:d_1,d_2,d_3$):
+
+$$(0,4), (\frac14,1	),(\frac18,\frac{11}{8}) \,;\, (\frac34,3), (1,0), (\frac78,\frac18) \,;\, (\frac{3}{8},\frac{25}{8}	),(\frac58,\frac12)(\frac12,\frac12)$$
+
+Очевидно из сравнимых мы можем выбрать наиболее предпочтительные - следственно можем отбросить $(\frac{3}{8},\frac{25}{8}	)$ и $(\frac34,3)$.
+
+Теперь, предполагая априорное распределение на $\Theta$: $\pi (\theta_1) = \alpha, \pi (\theta_2) = 1 - \alpha$ вычисляем для каждого допустимого правила байесовские риски $r(\delta_i) = R(\delta_i, \theta_1 ) \alpha + R(\delta_i,\theta_2 )(1- \alpha )$ для тех правил, которые мы не отбросили:
+
+$r(\delta_1) = 0 \alpha + (1-\alpha)4$
+
+
+$r(\delta_2) = \frac14 \alpha + (1-\alpha)1$
+
+$r(\delta_3) = \frac18 \alpha + (1-\alpha)\frac{11}{8}$
+
+$r(\delta_4) = 1 \alpha + (1-\alpha)0$
+
+$r(\delta_5) = \frac78 \alpha + (1-\alpha)\frac{1}{8}$
+
+$r(\delta_6) = \frac58 \alpha + (1-\alpha)\frac{1}{2}$
+
+$r(\delta_7) = \frac12 \alpha + (1-\alpha)\frac12$
+
+и находим байесовское решение:
+
+$\delta^* = argmin_{\delta} \delta$
+
+Что есть просто кусочно линейная функция 
+
+$\delta^* =  r(\delta_2) I(\alpha \in [0, \frac{9}{10}]) + r(\delta_4) I(\alpha \in (\frac{9}{10},\frac{31}{32}]) + r(\delta_1) I(\alpha \in (\frac{31}{32}, 1])$
+
+
+
+\prp Рассматривается задача оценивания неизвестной вероятности успеха $\theta$ по наблюдению числа успехов $X$ в $n$ испытаниях Бернулли. Функция потерь задана: $$L(\theta, \hat{\theta}) = \frac{(\hat{\theta} - \theta)^2}{\theta(1-\theta)},$$ а априорное распределение параметра является равномерным на интервале $(0, 1)$.
+
+Найти байесовское решающее правило. Является ли оно минимаксным?
+
+\textbf{Решение: } 
+
+Для заданного априорного распределения $\pi(\theta)$ находим апостериорное распределение $\pi(\theta|x)$:
+
+$$\pi(\theta|x) = \frac{f(x,\theta)\pi(\theta)}{f(x)} = \frac{\theta^x(1-\theta)^{n-x} 1}{\Expect f(x;\theta)} = \frac{\theta^x(1-\theta)^{n-x}}{\int\limits_0^1 \theta^x(1-\theta)^{n-x}d\theta}$$
+
+Дальше находим полную среднюю потерю по формуле:
+$$r(\delta) = \int \left( \int L(\delta(x), \theta)\pi(\theta|x)d\theta\right) f(x) dx, \,\,L(\delta(x), \theta) = \frac{(\delta(x) - \theta)^2}{\theta(1-\theta)}$$
+
+Окончательно получаем:
+
+$$r(\delta) = \int \left( \int \frac{(\delta - \theta)^2}{\theta(1-\theta)}\frac{\theta^x(1-\theta)^{n-x}}{\int\limits_0^1 \theta^x(1-\theta)^{n-x}d\theta}d\theta\right) \int\limits_0^1 \theta^x(1-\theta)^{n-x}d\theta dx$$
+
+
+
+
+
+Теперь байесовское решение можно найти как:
+
+
+$$\delta^* = argmin_{\delta} (r(\delta))$$
+
+Просто проинтегрировав, находим $\delta$, как минмум этой функции, что и будет баейсовским решением.
+
+!\textbf{Я отправлю эту часть (подсчёты) в понедельник, если можно, потому что мне рано утром в воскресенье нужно уезжать и приеду поздно ночью.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\prp Простая выборка $(X_1, . . . , X_n)$ получена из равномерного распределения на отрезке $[\theta_1, \theta_2]$. С помощью метода моментов построить оценки $\theta_1,\theta_2$. Могут ли они быть оптимальными?
+
+\textbf{Решение: } Ищем оценку для вектора параметров $\theta = [\theta_1, \theta_2]$, будем использовать два первых момента:
+
+$$M_1 = \Expect_\theta X_1 = \frac{\theta_1 + \theta_2}{2} \, \, and  \, \, M_2 = \Expect_\theta X_1^2 = \int_{\theta_1}^{\theta_2}t^2\frac{1}{\theta_2 - \theta_1} dt = \frac{\theta_2^3 - \theta_1^3}{3(\theta_2 - \theta_1)} = \frac{\theta_2^2 + \theta_1 \theta_2 + \theta_1^2}{3}$$
+
+Выражаем значения $\theta_1$ и $\theta_2$ через $M_1$ и $M_2$:
+
+$$\theta_1 = 2M_1 - \theta_2, \, M_2 = \frac{\theta_2^2 + \theta_2 (2M_1 - \theta_2) + (2M_1 - \theta_2)^2}{3}$$
+
+И получаем:
+
+$$\theta_2 = M_1 - \sqrt{3(M_2 - M_1^2)}, \, \theta_1 = M_1 + \sqrt{3(M_2 - M_1^2)}$$
+
+Теперь, подставляя вместо истинных моментов выборочные, получаем искомые ответы:
+
+$$\hat{M_1} = \frac{1}{n}\sum X_i; \, \hat{M_2} = \frac{1}{n}\sum X_i^2$$
+
+Получаем
+
+$$\hat{\theta_2} = \frac{1}{n}\sum X_i - \sqrt{3(\frac{1}{n}\sum X_i^2 - (\frac{1}{n}\sum X_i)^2)}$$ 
+
+$$\hat{\theta_1} = \frac{1}{n}\sum X_i + \sqrt{3(\frac{1}{n}\sum X_i^2 - (\frac{1}{n}\sum X_i)^2)}$$
+
+Достаточной статистикой является, как уже было получено на семинаре $T = (T_1, T_2) = (X_{(1)}, X_{(n)})$, но наша функция является функцией не только $(X_{(1)}, X_{(n)})$, но и всех остальных членов, слдственно по Теореме Рао-Блекуэлла-Колмогорова, не является оптимальной.
+
+\prp  По простай выборке $X_1,...,X_n$ из распределения $F(\theta, x)$ построить несмещенную оценку его характеристической функции. Является ли она состоятельной?
+
+\textbf{Решение: } Общая формула для характеристической функции:
+
+$$\Psi_X(t) = \Expect [ e^{itX} ] = \int e^{itX} d F_X(\theta,x)$$
+
+Построим выборочную характеристическую функцию:
+
+$$\hat\Psi_X(t) = \frac1n \sum\limits_{i=1}^{n} e^{itX_i} = \frac1n \sum\limits_{i=1}^{n} e^{itX_1}$$
+
+Проверим, является ли она несмещенной:
+
+$$\Expect [ \hat\Psi_X(t) ] = \Expect [ \frac1n \sum\limits_{i=1}^{n} e^{itX_1} ] = \frac1n \Expect \sum\limits_{i=1}^{n} e^{itX_1} = \frac1n \sum\limits_{i=1}^{n} \Expect e^{itX_1} = \frac1n n \Expect e^{itX_1} = \Expect e^{itX_1} = \Psi_{X_1}(t) = \Psi_{X}(t)$$
+
+То есть оценка является несмещенной.
+
+Состоятельность:
+
+Обозначим частичные суммы $S_n = \frac1n \sum\limits_{i=1}^{n} e^{itX_1}$, При этом каждый элемент суммы есть независимая случайная величина с математическим ожиданием $M = \Expect e^{itX_1} = \Psi_{X}(t)$. 
+
+Мы хотим $\forall \epsilon, \lim_{n \to \infty} \Prob \{ |\hat\Psi_X(t) - \Psi_X(t)| < \epsilon \} = 1$
+
+Где $\hat\Psi_X(t) = S_n$
+
+Добавим и вычтем в модуле $+M -M$:
+
+ $$\lim_{n \to \infty} \Prob \{ |S_n - M + M - \Psi_X(t)| < \epsilon \} = \lim_{n \to \infty} \Prob \{ |S_n - M | + |M  - \Psi_X(t)| < \epsilon \}$$
+ 
+Второй модуль тождественно равен нулю. Для первого - в силу независимости, существования матожиданий и одинаковой распределенности - по закону больших чисел выполнено:
+
+$$\forall \epsilon \lim_{n \to \infty} \Prob \{ |S_n - M | < \epsilon \} = 1$$
+
+Таким образом, получаем, что оценка состоятельная.
+
+
+\end{document}

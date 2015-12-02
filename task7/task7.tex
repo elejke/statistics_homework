@@ -1,0 +1,403 @@
+ \documentclass[12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}        % Кодировка входного документа;
+                                    % при необходимости, вместо cp1251
+                                    % можно указать cp866 (Alt-кодировка
+                                    % DOS) или koi8-r.
+
+\usepackage[english,russian]{babel} % Включение русификации, русских и
+                                    % английских стилей и переносов
+%%\usepackage{a4}
+%%\usepackage{moreverb}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{mathtools}
+\usepackage{tikz} %Рисование автоматов
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol} %Несколько колонок
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+%\usepackage{hyperref}
+
+%% \voffset-5mm
+%% \def\baselinestretch{1.44}
+\renewcommand{\theequation}{\arabic{equation}}
+\def\hm#1{#1\nobreak\discretionary{}{\hbox{$#1$}}{}}
+\newtheorem{Lemma}{Лемма}
+\theoremstyle{definiton}
+%%\newtheorem{Def}{Определение}
+\newtheorem{Claim}{Утверждение}
+\newtheorem{Cor}{Следствие}
+\newtheorem{Theorem}{Теорема}
+\theoremstyle{definition}
+\newtheorem{Example}{Пример}
+\newtheorem*{known}{Теорема}
+\def\proofname{Доказательство}
+\def\solutionname{Решение}
+\theoremstyle{definition}
+\newtheorem{Def}{Определение}
+
+%% \newenvironment{Example} % имя окружения
+%% {\par\noindent{\bf Пример.}} % команды для \begin
+%% {\hfill$\scriptstyle\qed$} % команды для \end
+
+
+
+
+
+
+%\date{22 июня 2011 г.}
+\let\leq\leqslant
+\let\geq\geqslant
+\def\MT{\mathrm{MT}}
+%Обозначения ``ажуром''
+\def\BB{\mathbb B}
+\def\CC{\mathbb C}
+\def\RR{\mathbb R}
+\def\SS{\mathbb S}
+\def\ZZ{\mathbb Z}
+\def\NN{\mathbb N}
+\def\FF{\mathbb F}
+%греческие буквы
+\let\epsilon\varepsilon
+\let\es\emptyset
+\let\eps\varepsilon
+\let\al\alpha
+\let\sg\sigma
+\let\ga\gamma
+\let\ph\varphi
+\let\om\omega
+\let\ld\lambda
+\let\Ld\Lambda
+\let\vk\varkappa
+\let\Om\Omega
+\def\abstractname{}
+
+\def\R{{\cal R}}
+\def\A{{\cal A}}
+\def\B{{\cal B}}
+\def\C{{\cal C}}
+\def\D{{\cal D}}
+\let\w\omega
+
+
+%вероятность 
+\newcommand{\Expect}{\mathsf{E}}
+\newcommand{\MExpect}{\mathsf{M}}
+\newcommand{\Disp}{\mathsf{D}}
+
+%классы сложности
+\def\REG{{\mathsf{REG}}}
+\def\CFL{{\mathsf{CFL}}}
+\newcounter{problem}
+\newcounter{uproblem}
+\newcounter{subproblem}
+\def\pr{\medskip\noindent\stepcounter{problem}{\bf \theproblem .  }\setcounter{subproblem}{0} }
+\def\prstar{\medskip\noindent\stepcounter{problem}{\bf $\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prpfrom[#1]{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem~(№#1 из задания).  }\setcounter{subproblem}{0} }
+\def\prp{\medskip\noindent\stepcounter{problem}{\bf Задача \theproblem .  }\setcounter{subproblem}{0} }
+\def\prpstar{\medskip\noindent\stepcounter{problem}{\bf Задача $\bf\theproblem^*$\negthickspace.  }\setcounter{subproblem}{0} }
+\def\prdag{\medskip\noindent\stepcounter{problem}{\bf Задача $\theproblem^{^\dagger}$\negthickspace\,.  }\setcounter{subproblem}{0} }
+\def\upr{\medskip\noindent\stepcounter{uproblem}{\bf Упражнение \theuproblem .  }\setcounter{subproblem}{0} }
+%\def\prp{\vspace{5pt}\stepcounter{problem}{\bf Задача \theproblem .  } }
+%\def\prs{\vspace{5pt}\stepcounter{problem}{\bf \theproblem .*   }
+\def\prsub{\medskip\noindent\stepcounter{subproblem}{\rm \thesubproblem .  } }
+\def\prsubstar{\medskip\noindent\stepcounter{subproblem}{\rm $\thesubproblem^*$\negthickspace.  } }
+%прочее
+\def\quotient{\backslash\negthickspace\sim}
+\begin{document}
+
+\centerline{\LARGE Домашнее задание 7, Новиков Герман, 277}
+
+\medskip
+
+%Все вычисления вместе с кодом и комментариями находятся в файле на $\href{https://github.com/elejke/statistics_homework/blob/master/task3/code/task3.ipynb}{\textbf{github}}$
+
+\prp
+
+\prp
+
+\prp (Задача 19). При измерении длины стержня, истинная длина которого
+равна $l > 0$ (и неизвестна), ошибка измерения имеет распределение $N(0, kl)$, где $k$ — известное число. Найти оценку наибольшего правдоподобия для параметра $l$, построенную на основании независимых измерений $X_1, X_2, . . . , X_n$ длины стержня.
+
+\textbf{Решение: } Строим оценку максимума правдоподобия. Выпишем правдоподобие:
+
+$$\mathcal{L}(l \,;\,X_1,\ldots,X_n) = f(X_1,X_2,\ldots,X_n\mid l) = \prod_{i=1}^n f(X_i\mid l) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi kl}} \exp{ \left(-\frac{(X_i - l)^2}{2kl}\right)}$$
+
+Логарифмируем (ОМП для логарифма правдоподобия будет совпадать с первоначаналньым).
+
+$$\mathcal{\log{L}} = -\frac{n}{2}\log{l} + \sum_{i=1}^{n} \left(- \frac{(X_i-l)^2}{2kl}\right) = -\frac{n}{2}\log{l} + \sum_{i=1}^{n} \left(- \frac{(X_i^2 - 2X_i l + l^2)}{2kl}\right)$$
+
+Максимизируем логарифм правдоподобия:
+
+$$0 = \frac{\partial}{\partial l}\mathcal{\log{L}} = -\frac{n}{2l} + \sum_{i=1}^{n} \frac{X_i^2}{2kl^2} - n \frac{1}{2k}$$
+
+$$ n l^2 + n k l - \sum_{i=1}^{n} X_i^2 = 0$$
+
+И находим окончательно - ОМП для параметра $l$:
+
+$$ \hat l =  \frac{- k + \sqrt{(k^2 + \frac{4}{n} \sum_{i=1}^{n} X_i^2)}}{2}$$
+
+
+%$$\hat l =  \frac{1}{k}\sqrt{\frac{1}{n}\sum_{i=1}^{n} X_i^2}$$
+
+
+
+\prp (Задача 20) Найти оценки наибольшего правдоподобия и эффективные оценки (если они существуют): а) параметра $\lambda$ в пуассоновском распределении б) параметра $\mu$ в показательном распределении в) параметра $p$ в биномиальном распределении с $n$ испытаниями. Являются ли полученные оценки несмещенными, состоятельными?
+
+\textbf{Решение: } 
+
+a) Строим ОМП для $\lambda$ в пуассоновском распределении:
+
+Функция правдоподобия:
+
+$$\mathcal{L}(\lambda \,;\,X_1,\ldots,X_n) = \prod\limits_{i=1}^n \frac{\lambda^{X_i} \exp{(-\lambda)}}{X_i!}$$
+
+Логарифм правдоподобия:
+
+$$l = \log \mathcal{L}(\lambda \,;\,X_1,\ldots,X_n)= \sum\limits_{i=1}^n X_i\log{\lambda} - n \lambda - \sum\limits_{i=1}^n \log{(X_i!)}$$
+
+Максимизируем логарифм правдоподобия:
+
+$$0 = \frac{\partial}{\partial \lambda} l = \frac{1}{\lambda} \sum\limits_{i=1}^n X_i - n$$
+
+Таким образом:
+
+$$\hat \lambda = \frac{\sum\limits_{i=1}^n X_i}{n}$$
+
+Проверяем: 
+
+i) Несмещенность:
+
+$$\Expect \hat \lambda = \Expect \frac{\sum\limits_{i=1}^n X_i}{n} = \frac{\sum\limits_{i=1}^n \Expect X_i}{n} = \lambda \rightarrow unbiased$$
+
+ii) Состоятельность:
+
+Для состоятельности необходимо, что бы предел $$ \forall \epsilon > 0 \lim_{n \to \infty} \Prob \{ |\hat\lambda - \lambda| < \epsilon \} = 1 $$
+
+Доказательство по ЗБЧ: условия одинаковой распределенности, существования мат.ожиданий и убывающих дисперсий:
+
+$$\mathsf{D}\hat\lambda = \frac{1}{n^2}\sum\limits_{i=1}^n \mathsf{D} X_i = \frac{1}{n^2} n \lambda = \frac{\lambda}{n} = O\left(\frac{1}{n}\right), n \to \infty$$
+
+Таким образом, это состоятельная оценка.
+
+iii) Эффективная оценка: 
+
+Воспользуемся следствием из неравенства Рао-Крамера:
+
+(R) Для любого $y \in \mathbb{R_+}$ выполнена дифференцируемость $\sqrt{f_{\lambda}(y)}$ по параметру $\lambda$
+
+(RR) Информация Фишера существует, положительна и непрерывна во всех точках.
+
+\textbf{Следствие :} Если в неравенстве Рао-Крамера достигается равенство, то оценка $\hat \theta$ эфеективна в классе несмещенных (в нашем частном случае).
+
+Для дважды дифф. по $\lambda$:
+
+$$I_n(\lambda) = -  \Expect \left(\frac{\partial^2 l}{\partial \lambda^2}\right) = \Expect \frac{1}{\lambda^2} \sum\limits_{i=1}^n X_i = \frac{1}{\lambda^2} \sum\limits_{i=1}^n \Expect X_i = \frac{n}{\lambda}$$
+
+
+Но тогда и получаем необходимое равенство:
+
+$$\mathsf{D}\hat\lambda = \frac{\lambda}{n} = \frac{1}{I_n(\lambda)}$$
+
+То есть, ОМП $\hat\lambda$ - \textbf{эффективная}.
+
+\bigskip
+
+б)  Строим ОМП для параметра $\mu$ в показательном распределении:
+
+$$\mathcal{L}(\mu \,;\,X_1,\ldots,X_n) = \prod\limits_{i=1}^n \mu \exp{(-\mu X_i)}$$
+
+Логарифм правдоподобия:
+
+$$l = \log \mathcal{L}(\mu \,;\,X_1,\ldots,X_n) = n \log (\mu) - \sum\limits_{i=1}^n \mu X_i  $$
+
+Минимизируем логарифм правдоподобия:
+
+$$0 = \frac{\partial}{\partial \mu} l = \frac{n}{\mu} - \sum\limits_{i=1}^n X_i$$
+
+Получаем ОМП для $\mu$:
+
+$$\hat \mu = \frac{n}{\sum\limits_{i=1}^n X_i}$$
+
+
+Проверяем: 
+
+i) Несмещенность:
+
+$$\Expect \hat \mu  = \Expect \frac{n}{\sum\limits_{i=1}^n X_i}$$
+
+Распределение суммы показательно распределенных величин через гамма-распределение:
+
+$$\Prob_{\sum X_i} (x) = \mathbb{I}(X \geq 0) \frac{\mu^n x^{n-1}}{\Gamma(n)}$$
+
+
+$$\Expect \frac{1}{\sum X_i} = \int\limits_0^{\infty} \frac{1}{x} \frac{\mu^n}{\Gamma(n)} x^{n-1} \exp{(-\mu x)} dx = \frac{\mu}{n-1}$$
+
+$$\Expect \hat \mu = n \Expect \frac{1}{\sum X_i} = n \frac{\mu}{n-1} = \frac{n}{n-1} \mu$$
+
+То есть замечаем, что не является несмещенной, однако, является ассимтотически несмещенной.
+
+
+ii) Состоятельность:
+
+$$\Disp \hat\mu = n^2 \Disp \left(\frac{1}{\sum X_i} \right) = n^2 \left( \Expect  \left(\frac{1}{\sum X_i} \right)^2 -  \left(\Expect\frac{1}{\sum X_i}\right)^2 \right) $$
+
+Посчитаем только $$\Expect  \left(\frac{1}{\sum X_i} \right)^2 = $$
+
+Аналогично матожиданию, с помощью гамма-функции:
+
+$$= \frac{mu^2}{\Gamma(n)} \Gamma(n-2) = \frac{\mu^2}{(n-1)(n-2)}$$
+
+И для дисперсии:
+
+$$\Disp \hat\mu = \frac{n^2 \mu^2}{(n-1)^2(n-2)} = O\left(\frac1n\right), n \to \infty$$
+
+То есть, аналогично пункту (а) получаем \textbf{состоятельность} оценки.
+
+iii) Эффективность:
+
+$$I_n(\mu) = -  \Expect \left(\frac{\partial^2 l}{\partial \mu^2}\right) = -\Expect \left( - \frac{n}{\mu^2}\right) = \frac{n}{\mu^2} \neq  \frac{n^2 \mu^2}{(n-1)^2(n-2)} = \Disp \hat\mu$$
+
+То есть не является эффективной, однако, при $n \to \infty$ равенство выполнено:
+
+$$\lim_{n \to \infty} \Disp \hat\mu = \lim_{n \to \infty} \frac{n^2 \mu^2}{(n-1)^2(n-2)} =  \frac{\mu^2}{n} = \frac{1}{I_n(\mu)}$$
+
+То есть -\textbf{ ассимптотически эффективная}.
+
+\bigskip
+
+в) Строим ОМП для параметра $p$ в биномиальном распределении:
+
+$$\mathcal{L}(p \,;\,X_1,\ldots,X_n) = \prod\limits_{i=1}^n p^{X_i} (1-p)^{(1 - X_i)} = p^{\sum\limits_{i=1}^n X_i} (1-p)^{n - \sum\limits_{i=1}^n X_i}$$
+
+Логарифм правдоподобия:
+
+$$l = \log \mathcal{L}(p \,;\,X_1,\ldots,X_n) =  \log{p} \sum\limits_{i=1}^n X_i + \log{(1-p)} (n - \sum\limits_{i=1}^n X_i) $$
+
+Максимизируем логарифм правдоподобия:
+
+$$0 = \frac{\partial}{\partial p} l = \frac1p \sum\limits_{i=1}^n X_i - \frac{1}{(1-p)} (n - \sum\limits_{i=1}^n X_i) = $$
+
+$$  = 1 \sum\limits_{i=1}^n X_i  - p \sum\limits_{i=1}^n X_i  - p n + p \sum\limits_{i=1}^n X_i$$
+
+И находим ОМП для $p$:
+
+$$\hat p = \frac{ \sum\limits_{i=1}^n X_i}{n}$$ 
+
+Проверяем: 
+
+i) Несмещенность:
+
+$$\Expect \hat p  = \Expect \frac{ \sum\limits_{i=1}^n X_i}{n} =  \frac{ \sum\limits_{i=1}^n \Expect X_i}{n} = \frac{np}{n} = p$$
+
+ii) Состоятельность: Аналогично пункту (а) проверяем убывание к нулю дисперсий (все остальные условия выполнены):
+
+$$\mathsf{D} \hat p = \mathsf{D} \left(\frac{ \sum\limits_{i=1}^n X_i}{n}\right) = \frac{1}{n^2} \mathsf{X_i} = \frac{1}{n} p(1-p) = O\left( \frac1n \right), n \to \infty$$
+
+То есть оценка \textbf{состоятельная.}
+
+iii) Эффективная:
+
+Аналогично - используем следствие из неравенства Рао-Крамера:
+
+
+$$I_n(p) = -  \Expect \left(\frac{\partial^2 l}{\partial p^2}\right) =  - \Expect \left( - \frac{1}{p^2} \sum X_i - \frac{1}{(1-p)^2} (n - \sum X_i) \right) = -\frac{n}{p} + \frac{n}{(p-1)} = \frac{n}{p(p-1)}$$
+
+
+Получаем равенство в неравенстве:
+
+$$\Disp \hat{p}^2 = \frac{p(p-1)}{n} =  \frac{1}{I_n(p)}$$
+
+То есть являтеся \textbf{эффективной}. 
+
+
+\prp (Задача 40). В результате наблюдения точечного случайного процесса (потока событий) получена выборка $(X_1, . . . , X_n)$ моментов появления в нем событий. Предполагая, что наблюдаемый процесс является пуассоновским, найти ММП-оценки для интервала времени между событиями и для интенсивности потока событий.
+
+\textbf{Решение: } ФР интервалов $T = X_{j+1} - X_j, j = \overline{1,n-1}$:
+
+$$F_T(t) = \Prob(T \leq t) = 1 - \exp{(-\lambda t)}$$
+
+Плотность: $f_T(t) = \lambda \exp{(-\lambda t)}$
+
+Найдём функцию правдоподобия:
+
+
+$$\mathcal{L}(\lambda \,;\,X_1,\ldots,X_n) = \prod\limits_{i=1}^n \lambda \exp{(-\lambda X_i)} = \lambda^n \exp{(-\lambda\sum X_i)}$$
+
+Логарифм правдоподобия:
+
+$$l = \log{(\mathcal{L}(\lambda \,;\,X_1,\ldots,X_n))} = n \log \lambda - \lambda \sum X_i$$ 
+
+Максимизируем логарифм правдоподобия:
+
+$$\frac{\partial l}{\partial \lambda} = n \frac{1}{\lambda} - \sum X_i = 0$$
+
+ОМП:
+
+$$ \hat \lambda = \frac{n}{\sum X_i}$$
+
+Теперь, так как выполнено условие непрерывности функции распределения, оценку для $T$ можно получить используя:
+
+$$\hat{T} = \hat{X_{1}} = \hat{\left(\frac{1}{\lambda}\right)} = \frac{1}{\hat\lambda} = \frac{\sum X_i}{n}$$
+
+Так как промежутки между событиями не зависят от других промежутков.
+
+\prp (Задача 64). Значение сигнала $Y$ на входе некоторого устройства может быть либо нулем, либо единицей. Значение $Y$ недоступно для измерения. На выходе устройства наблюдается (и измеряется) величина $X$, являющаяся суммой входного сигнала и гауссовского шума с нулевым математическим ожиданием и известной дисперсией $\sigma^2$.Построить оптимальное байесовское решающее правило для классификации входных сигналов на основании измерения величины $X$ при известных вероятностях $\Prob\{Y = 0\} = p, \Prob\{Y = 1\} = 1 - p$.
+
+\textbf{Решение: } Найдем апостериорные вероятности классов по формуле:
+
+$$\pi(i|x) = \pi_i(x) = \frac{f_i(x) \pi_i}{\sum\limits_{s=0}^1\pi_s f_s(x)}, \, \pi_0 = p, \pi_1 = 1 - p$$
+
+Где плотности имеют вид:
+
+$$f_0(x) = \frac{1}{\sqrt{2\pi \sigma^2}}\exp{\left(-\frac{x^2}{2\sigma^2}\right)}, f_1(x) = \frac{1}{\sqrt{2\pi \sigma^2}}\exp{\left(-\frac{(x-1)^2}{2\sigma^2}\right)}$$
+
+В силу того, что вход и выход бинарные $\{0,1\}$, то линейная функция потерь совпадает с квадратичной и задаётся формулой:
+
+$$l(i|j) = (i-j)^2 = |i-j|$$
+
+В таком случае байесовский принцип сводится к тому, что бы относить объект с характеристикой $x$ к тому классу, апостериорная вероятность которого максимальна (\textit{принцип максимума апостериорной вероятности}):
+
+Забивая на знаменатели, минимизируем только функции:
+
+$$h_j(x) = \sum\limits_{i=1}^k l(j|i) \pi_i f_i(x), \, j=\overline{1,k}$$
+
+В нашем случае:
+
+$$h_0(x) = l(0|1)\pi_1 f_1(x), \, \, h_1(x) = l(1|0) \pi_0 f_0(x)$$
+
+Таким образом, решение отнести объект $x$ к первому классу принимается тогда и только тогда, когда $\pi_1 f_1(x) \leq \pi_0 f_0(x)$/
+
+Оптимальное байесовское правило $\delta^*$ имеет в этом случае вид:
+
+\[
+	\delta^* =
+	\begin{cases}
+		0, & \text{если $x \in W_0^*$} \\
+		1, & \text{если $x \in \overline{W_0^*}$}
+	\end{cases}
+\]
+
+Где $W_1^*$ выражается через вероятности:
+
+\[
+W_0^* = \Bigl\{ x : \frac{f_1(x)}{f_0(x)} \leq \frac{\pi_0}{\pi_1}
+\Bigr\}
+\]
+
+Остается только вычислить эти отношения:
+
+$$\exp{\left(-\frac{(-2x + 1)}{2\sigma^2}\right)} \leq \frac{p}{1-p} $$
+
+$$\frac{2x - 1}{2\sigma^2} \leq  \log {( \frac{p}{1-p} )} $$ 
+
+То есть при $ x \leq \sigma^2 \log {( \frac{p}{1-p} )} + \frac12$ нужно выбирать $0$, а иначе $1$.
+
+
+
+
+
+\end{document}
